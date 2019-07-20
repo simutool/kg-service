@@ -6,16 +6,16 @@ import yaml
 import logging
 import requests
 
-logger = logging.getLogger('web2py.app.simutool_kms.kgservice')
+logger = None
 kgexceptions = KgExceptions()
 
 class KgService(object):
     __metaclass__ = ABCMeta
     # initialize the graph
     def __init__(self, url, user, pwd, model, meta, path=''):
+        self._config_parser(path)
         self.initialize_logger()
         self.graph = Graph(url, auth=(user, pwd))
-        self._config_parser(path)
         self.verify_and_set_tags(model, meta)
         self._initialize_db_constraints()
 
@@ -29,6 +29,8 @@ class KgService(object):
 
     def initialize_logger(self):
         global logger
+        base_logger_name = self.parent_logger_name
+        logger = logging.getLogger(base_logger_name + '.kgservice')
         logger.setLevel(logging.DEBUG)
         logging.basicConfig(level=logging.DEBUG,
                             format='%(asctime)s %(name)-12s %(levelname)-8s' +
@@ -494,6 +496,8 @@ class KgService(object):
             val = param.values()[0]
             if prop == 'notify_endpoint':
                 self.notify_endpoint = val
+            if prop == 'parent_logger_name':
+                self.parent_logger_name = val
 
 
     # _is_empty: checks if given payload is empty in our definition

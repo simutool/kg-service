@@ -1,8 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from KgService import *
 
-logger = logging.getLogger('web2py.app.simutool_kms.kgservice')
-
 class TBoxService (KgService):
     base_url = "http://example.org/tbox/"
     def __init__(self, url, user, pwd, path=''):
