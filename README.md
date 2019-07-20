@@ -81,11 +81,12 @@ input: payload (dict of node uri, new properties and new relations)
 
 i.e. 
 ```json
-payload = 
+{ "payload" = 
 {
     "uri": "http://example.org/abox/adrian", 
     "email":"adrian@simutool.com", 
     "contributor": ["http://example.org/abox/ecn", "http://example.org/abox/oven"]
+}
 }
 ```
 ### Delete
