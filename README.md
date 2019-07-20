@@ -15,7 +15,7 @@ Any required libraries? Which versions? How to install them?
 
    *  `https://py2neo.org/v4/`
 
-   *  install via `$ pip install 'py2neo==4.2'`
+   *  install via `$ pip install "py2neo==4.2"`
 
 *  PyYAML
 
@@ -45,7 +45,7 @@ What needs to be entered in config files for the libtrary to run?
    *  BLACKLIST (here: *create, merge, delete, set, remove*)
    *  PARAMS: with notify_endpoint url
 
-   Adjust them to fit your project's needs.
+   Adjust them to fit your project"s needs.
 
 ## Usage
 
@@ -56,12 +56,12 @@ input: payload (dict of list of dicts of properties, relations and type
 
 i.e. 
 ```json
-{'payload': [
+{"payload": [
     {
-        'type': 'http://example.org/tbox/user', 
-        'name': 'Nasr', 
-        'email':'nasr@simutool.com', 
-        'uploader':'http://example.org/tbox/production'
+        "type": "http://example.org/tbox/user", 
+        "name": "Nasr", 
+        "email":"nasr@simutool.com", 
+        "uploader":"http://example.org/tbox/production"
     }
 ]}
 ```
@@ -83,9 +83,9 @@ i.e.
 ```json
 payload = 
 {
-    'uri': 'http://example.org/abox/adrian', 
-    'email':'adrian@simutool.com', 
-    'contributor': ['http://example.org/abox/ecn', 'http://example.org/abox/oven']
+    "uri": "http://example.org/abox/adrian", 
+    "email":"adrian@simutool.com", 
+    "contributor": ["http://example.org/abox/ecn", "http://example.org/abox/oven"]
 }
 ```
 ### Delete
@@ -98,7 +98,7 @@ i.e.
 http://example.org/abox/agi
 ``
 ### Get
-return node's properties and relations by given uri
+return node"s properties and relations by given uri
 
 input: uri
 
@@ -116,7 +116,7 @@ i.e.
 http://example.org/tbox/activity
 ``
 ### Get self descendants
-return TBox node's properties and its subclasses
+return TBox node"s properties and its subclasses
 
 input: uri
 
