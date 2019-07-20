@@ -1,0 +1,16 @@
+PROJECT: SIMUTOOL
+DOMAIN_NAME: http://example.org/abox
+BLACKLIST:
+    - create
+    - merge
+    - delete
+    - set
+    - remove
+TERMS:
+    - subclass_of: subclass_of
+    - instance_of: type
+    - identifier: identifier
+    - model: ABox
+    - meta: TBox
+PARAMS:
+    - notify_endpoint: http://127.0.0.1:8000/simutool_kms/event/api
