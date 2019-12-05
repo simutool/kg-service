@@ -1,130 +1,247 @@
 # kgservice
 
-The kgservice is a python module which allows you to query Neo4j databases via pre-defined functions.
+The kgservice is a graph database interface, which allows to query the graph
+via API access. It takes a pre-defined domain-model and thereby adds semantics
+to the graph. With use of included specialized queries this information can be
+retrieved by the user.
+
+The KgService is python module which connects to a running Neo4j database
+instance.
 
 ## Getting Started
 
 ### Technical requirements
-Which python version?
+Python version:
 
 *  Python 2.7
 
-Any required libraries? Which versions? How to install them?
+*  python-pip
 
-*  py2neo version 4.2
+Python packages (need installation):
 
-   *  `https://py2neo.org/v4/`
+*  py2neo version 4.2 (https://py2neo.org/v4/): install via `$ pip install "py2neo==4.2"`
 
-   *  install via `$ pip install "py2neo==4.2"`
+*  PyYAML (https://pyyaml.org/): install via `$ pip install pyyaml`
 
-*  PyYAML
+*  pytest (https://docs.pytest.org/): install via `$ pip install pytest pytest-cov`
 
-   *  `https://pyyaml.org/`
-
-   *  install via `$ pip install pyyaml`
-
-*  pytest
-
-   *  `https://docs.pytest.org/`
-
-   *  install via `$ pip install pytest pytest-cov`
-
-*  Flake8
-
-   *  `http://flake8.pycqa.org/`
-
-   *  install via `$ pip install flake8`
+*  Flake8 (http://flake8.pycqa.org/): install via `$ pip install flake8`
 
 ### Installing
-What needs to be entered in config files for the libtrary to run?
+Clone this project into your local destination. It is recommended to access
+the interface functions of KgService.py from a front-end application, or
+directly via API. If not available or for development purposes, it is also
+possible to run it on console.
 
-* Rename `config.yaml_` to `config.yaml`
-*  The following information is stored within the `config.yaml` file:
-   *  PROJECT (here: *SIMUTOOL*)
-   *  DOMAIN_NAME (here: *http://example.org/*)
-   *  BLACKLIST (here: *create, merge, delete, set, remove*)
-   *  PARAMS: with notify_endpoint url
+## Configuration files
+You need to adjust the following configuration files to fit your
+project's needs:
+*  config.yaml:
+   *  PROJECT (e.g.: *SIMUTOOL*)
+   *  DOMAIN_NAME (e.g.: *http://example.org/abox*)
+   *  BLACKLIST (e.g.: *create, merge, delete, set, remove*)
+   *  TERMS:
+         - subclass_of (e.g. *subclass_of*)
+         - instance_of: (e.g. *type*)
+         - identifier: (e.g. *identifier*)
+         - model: (e.g. *ABox*)
+         - meta: (e.g. *TBox*)
 
-   Adjust them to fit your project"s needs.
+* constants.yaml
+   *  PARAMS:
+         - notify_endpoint: *your endpoint url*
+
+* \_pass.yaml (file has to be created)
+   *  url: *your neo4j instance, including port*
+   *  user: *your neo4j user*
+   *  pass: *your neo4j password*
 
 ## Usage
 
 ### Create
 create node, properties and relations
 
-input: payload (dict of list of dicts of properties, relations and type
+```python
+This function creates instances and also allows to
+directly create relations and properties.
 
-i.e. 
-```json
-{"payload": [
-    {
-        "type": "http://example.org/tbox/user", 
-        "name": "Nasr", 
-        "email":"nasr@simutool.com", 
-        "uploader":"http://example.org/tbox/production"
-    }
-]}
+Parameters
+----------
+payload : pl (see format below)
+pl : {'payload': [{'att1': val1, ...}, {'att1': val1, ...}]}
+    att[i] : relation or property
+user : identifier
+    Optional parameter. If available, given user will receive
+    email notifications.
+
+Example input
+-------------
+{'payload': [{
+    "title": "Mr NK",
+    "mbox": "n.k@uni-bamberg.de",
+    "type": "http://example.org/user",
+    "description": "Employee"
+}]}
+
+Returns
+-------
+payload : pl (see format above)
+    Returns the newly created instance and its relations and
+    properties.
+
+Example output
+--------------
+{'payload': [{
+    "title": "Mr NK",
+    "mbox": "n.k@uni-bamberg.de",
+    "type": "http://example.org/user",
+    "description": "Employee",
+    "identifier": "http://example.org/xyz123"
+}]}
 ```
+
 ### Query
-execute cypher query (modifying operations excluded)
+```python
+This function allows to perform cypher queries. Modifying operations
+are excluded.
 
-input: cypher query
+Parameters
+----------
+query : cypher query
 
-i.e. 
-```cypher
-MATCH (n) RETURN n
+Example input
+-------------
+"MATCH (n) WHERE n.name = 'Mr N.K.' RETURN n.mbox"
+
+Returns
+-------
+payload : pl (see format above)
+    Returns the query result
+
+Example output
+--------------
+{'payload': [{"n.mbox": "n.k@uni-bamberg.de"}]}
 ```
 ### Update
-set new properties and relations to node
+```python
+This function updates one or more instances, i.e. it sets new
+properties and relations.
 
-input: payload (dict of node uri, new properties and new relations)
+Parameters
+----------
+payload : pl (see format below)
+pl : {'payload': [{'att1': val1, 'identifier': id}]}
+    att[i] : relation or property
+    identifier : identifier
 
-i.e. 
-```json
-{ "payload" = 
-{
-    "uri": "http://example.org/abox/adrian", 
-    "email":"adrian@simutool.com", 
-    "contributor": ["http://example.org/abox/ecn", "http://example.org/abox/oven"]
-}
-}
+Example input
+-------------
+{'payload': [{
+    "title": "Mr NK new",
+    "identifier": "http://example.org/xyz123"
+}]}
+
+Returns
+-------
+payload : pl (see format above)
+    Returns the updated instance(s) and its relations and
+    properties.
+
+Example output
+--------------
+{'payload': [{
+    "title": "Mr NK new",
+    "mbox": "n.k@uni-bamberg.de",
+    "type": "http://example.org/user",
+    "description": "Employee",
+    "identifier": "http://example.org/xyz123"
+}]}
 ```
 ### Delete
-detach ABox-node from its relations and delete it (by given uri)
+```python
+This function deletes instances and outputs True if successful.
 
-input: uri (of ABox node)
+Parameters
+----------
+payload : pl (see format below)
+pl : {'payload': [{'identifier1': id1}, {'identifier2': val2}]}
+    identifier[i] : identifier
 
-i.e. 
-``
-http://example.org/abox/agi
-``
+Example input
+-------------
+{'payload': [{"identifier": "http://example.org/xyz123"}]}
+
+Returns
+-------
+True : Bool
+False : Bool
+
+Example output
+--------------
+True
+```
 ### Get
-return node"s properties and relations by given uri
+```python
+This function queries for all attributes (i.e. relations and
+properties) of a given instance and returns them if found.
 
-input: uri
+Parameters
+----------
+payload : pl (see format below)
+pl : {'payload': [{'identifier1': val1}, {'identifier2': val1}]}
+    identifier[i] : identifier
 
-i.e. 
-``
-http://example.org/tbox/activity
-``
+Example input
+-------------
+{'payload': [{"identifier": "http://example.org/xyz123"}]}
+
+Returns
+-------
+payload : pl (see format above)
+    Returns the instance and its relations and properties.
+
+Example output
+--------------
+{'payload': [{
+    "title": "Mr NK",
+    "mbox": "n.k@uni-bamberg.de",
+    "type": "http://example.org/user",
+    "description": "Employee",
+    "identifier": "http://example.org/xyz123"
+}]}
+```
 ### Get instances
-returns all instances and sub-instances of a class
+```python
+This function takes a class identifier and returns all its instances.
 
-input: class uri
+Parameters
+----------
+identifier : identifier
+    the identifier needs to be a class identifier
 
-i.e. 
-``
-http://example.org/tbox/activity
-``
-### Get self descendants
-return TBox node"s properties and its subclasses
+Example input
+-------------
+"http://example.org/user"
 
-input: uri
+Returns
+-------
+payload : pl (see format above)
+    Returns a list of dicts. The dicts contain the instances.
 
-i.e. 
-``
-http://example.org/tbox/activity
-``
+Example output
+--------------
+{'payload': [{
+    "title": "Mr NK",
+    "mbox": "n.k@uni-bamberg.de",
+    "type": "http://example.org/user",
+    "description": "Employee",
+    "identifier": "http://example.org/xyz123"
+}]}
+```
+### Internal functions
+Internal used functions are named with an leading underscore ('_helper_function_x').
+These functions are non-interface functions and only called internally from other functions.
+
 
 ## Testing
 
@@ -142,9 +259,9 @@ run the following command:
 $ pytest -v --cov-report term-missing --cov=kgservice_v_1_0
 ```
 
-## Contributing
 
 ## Versioning
+KgService Version 1.0
 
 ## Authors
 
@@ -154,7 +271,7 @@ $ pytest -v --cov-report term-missing --cov=kgservice_v_1_0
 
 ## License
 
-This project is licensed under
+This project is licensed under Apache.
 
 ## Acknowledgements
 
