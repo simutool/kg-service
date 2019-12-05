@@ -66,7 +66,7 @@ This function creates instances and also allows to
 directly create relations and properties.
 
 Parameters
-----------
+______
 payload : pl (see format below)
 pl : {'payload': [{'att1': val1, ...}, {'att1': val1, ...}]}
     att[i] : relation or property
@@ -75,7 +75,7 @@ user : identifier
     email notifications.
 
 Example input
--------------
+______
 {'payload': [{
     "title": "Mr NK",
     "mbox": "n.k@uni-bamberg.de",
@@ -84,13 +84,13 @@ Example input
 }]}
 
 Returns
--------
+______
 payload : pl (see format above)
     Returns the newly created instance and its relations and
     properties.
 
 Example output
---------------
+______
 {'payload': [{
     "title": "Mr NK",
     "mbox": "n.k@uni-bamberg.de",
@@ -106,20 +106,20 @@ This function allows to perform cypher queries. Modifying operations
 are excluded.
 
 Parameters
-----------
+______
 query : cypher query
 
 Example input
--------------
+______
 "MATCH (n) WHERE n.name = 'Mr N.K.' RETURN n.mbox"
 
 Returns
--------
+______
 payload : pl (see format above)
     Returns the query result
 
 Example output
---------------
+______
 {'payload': [{"n.mbox": "n.k@uni-bamberg.de"}]}
 ```
 ### Update
@@ -128,27 +128,27 @@ This function updates one or more instances, i.e. it sets new
 properties and relations.
 
 Parameters
-----------
+______
 payload : pl (see format below)
 pl : {'payload': [{'att1': val1, 'identifier': id}]}
     att[i] : relation or property
     identifier : identifier
 
 Example input
--------------
+______
 {'payload': [{
     "title": "Mr NK new",
     "identifier": "http://example.org/xyz123"
 }]}
 
 Returns
--------
+______
 payload : pl (see format above)
     Returns the updated instance(s) and its relations and
     properties.
 
 Example output
---------------
+______
 {'payload': [{
     "title": "Mr NK new",
     "mbox": "n.k@uni-bamberg.de",
@@ -162,22 +162,22 @@ Example output
 This function deletes instances and outputs True if successful.
 
 Parameters
-----------
+______
 payload : pl (see format below)
 pl : {'payload': [{'identifier1': id1}, {'identifier2': val2}]}
     identifier[i] : identifier
 
 Example input
--------------
+______
 {'payload': [{"identifier": "http://example.org/xyz123"}]}
 
 Returns
--------
+______
 True : Bool
 False : Bool
 
 Example output
---------------
+______
 True
 ```
 ### Get
@@ -186,22 +186,22 @@ This function queries for all attributes (i.e. relations and
 properties) of a given instance and returns them if found.
 
 Parameters
-----------
+______
 payload : pl (see format below)
 pl : {'payload': [{'identifier1': val1}, {'identifier2': val1}]}
     identifier[i] : identifier
 
 Example input
--------------
+______
 {'payload': [{"identifier": "http://example.org/xyz123"}]}
 
 Returns
--------
+______
 payload : pl (see format above)
     Returns the instance and its relations and properties.
 
 Example output
---------------
+______
 {'payload': [{
     "title": "Mr NK",
     "mbox": "n.k@uni-bamberg.de",
@@ -215,21 +215,21 @@ Example output
 This function takes a class identifier and returns all its instances.
 
 Parameters
-----------
+______
 identifier : identifier
     the identifier needs to be a class identifier
 
 Example input
--------------
+______
 "http://example.org/user"
 
 Returns
--------
+______
 payload : pl (see format above)
     Returns a list of dicts. The dicts contain the instances.
 
 Example output
---------------
+______
 {'payload': [{
     "title": "Mr NK",
     "mbox": "n.k@uni-bamberg.de",
