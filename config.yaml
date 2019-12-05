@@ -12,6 +12,3 @@ TERMS:
     - identifier: identifier
     - model: ABox
     - meta: TBox
-PARAMS:
-    - notify_endpoint: http://127.0.0.1:8000/appserver/event/api
-    - parent_logger_name: web2py.app.appserver
