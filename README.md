@@ -36,7 +36,7 @@ possible to run it on console.
 ## Configuration files
 You need to adjust the following configuration files to fit your
 project's needs:
-*  config.yaml:
+*  config.yaml (just keep it as it is to start):
    *  PROJECT (e.g.: *SIMUTOOL*)
    *  DOMAIN_NAME (e.g.: *http://example.org/abox*)
    *  BLACKLIST (e.g.: *create, merge, delete, set, remove*)
@@ -47,11 +47,7 @@ project's needs:
          - model: (e.g. *ABox*)
          - meta: (e.g. *TBox*)
 
-* constants.yaml
-   *  PARAMS:
-         - notify_endpoint: *your endpoint url*
-
-* \_pass.yaml (file has to be created)
+* \_pass.yaml (file has to be created with the format below)
    *  url: *your neo4j instance, including port*
    *  user: *your neo4j user*
    *  pass: *your neo4j password*
