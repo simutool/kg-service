@@ -262,7 +262,7 @@ KgService Version 1.0
 ## Authors
 
 * Adrian Lengenfelder - Development
-* Nasr Kasrin - Architecture, Project Management
+* Nasr Kasrin - Architecture, Product & Project Management
 * Daniela Nicklas - Lead
 
 ## License
