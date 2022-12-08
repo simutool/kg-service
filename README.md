@@ -1,12 +1,10 @@
 # kgservice
 
-The kgservice is a graph database interface, which allows to query the graph
-via API access. It takes a pre-defined domain-model and thereby adds semantics
-to the graph. With use of included specialized queries this information can be
-retrieved by the user.
+The kgservice is a knowledge graph database interface, which allows to query the graph via API access, and checks for integrity constraints relative to the domain model (ontology) provided. It takes a pre-defined domain-model and thereby adds semantics to the graph. With use of included specialized queries this information can be retrieved by the user.
 
-The KgService is python module which connects to a running Neo4j database
-instance.
+The KgService is python service which connects to a running Neo4j database instance.
+
+**Note: This project is archived.**
 
 ## Getting Started
 
